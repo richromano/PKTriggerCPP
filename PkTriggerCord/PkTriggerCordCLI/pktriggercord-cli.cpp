@@ -33,10 +33,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#ifdef WIN32
 //#include <utime.h>
 #include <io.h>
 #include "tdbtimes.h"
 #include "getopt.h"
+#else
+#include <unistd.h>
+#include <getopt.h>
+#endif
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdarg.h>
@@ -60,7 +65,11 @@ bool astrotracer_before=false;
 bool need_bulb_new_cleanup=false;
 bool need_one_push_bracketing_cleanup=false;
 
+#ifdef WIN32
 static option const longopts[] = {
+#else
+static struct option const longopts[] = {
+#endif
     {"exposure_mode", required_argument, NULL, 'm'},
     {"resolution", required_argument, NULL, 'r'},
     {"quality", required_argument, NULL, 'q'},

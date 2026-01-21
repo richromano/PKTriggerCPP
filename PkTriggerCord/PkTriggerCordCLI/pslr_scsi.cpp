@@ -24,4 +24,13 @@
     and GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#if defined(WIN32) || defined(RAD10)
 #include "pslr_scsi_win.h"
+#else
+/* Ugly hack. More generic ifs required */
+#ifdef __OpenBSD__
+#include "pslr_scsi_openbsd.c"
+#else
+#include "pslr_scsi_linux.c"
+#endif
+#endif

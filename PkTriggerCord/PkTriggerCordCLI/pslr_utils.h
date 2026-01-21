@@ -30,7 +30,11 @@
 #ifndef PKTRIGGERCORD_COMMON_H
 #define PKTRIGGERCORD_COMMON_H
 
+#ifdef WIN32
 //#include <utime.h>
+#else
+#include <sys/time.h>
+#endif
 #include <time.h>
 #include <math.h>
 

@@ -27,9 +27,14 @@
     and GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifdef WIN32
 #include <windows.h>
 //#include <utime.h>
 #include "tdbtimes.h"
+#else
+#include <sys/time.h>
+#include <unistd.h>
+#endif
 #ifndef WIN32
 #include <sys/socket.h>
 #include <arpa/inet.h>

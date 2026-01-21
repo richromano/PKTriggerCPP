@@ -42,9 +42,13 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <signal.h>
+#ifdef WIN32
 #include <windows.h>
 //#include <utime.h>
 #include "tdbtime.h"
+#else
+#include <unistd.h>
+#endif
 #include <stdbool.h>
 #include <stdarg.h>
 //#include <dirent.h>
@@ -60,12 +64,6 @@
                      * memory allocation error from sg driver */
 #define BLOCK_RETRY 3 /* Number of retries, since we can occasionally
                        * get SCSI errors when downloading data */
-
-					   // MSVC defines this in winsock2.h!?
-/*typedef struct timeval {
-	long tv_sec;
-	long tv_usec;
-} timeval;*/
 
 int gettimeofday(struct timeval * tp, void * tzp)
 {
@@ -101,7 +99,7 @@ void usleep(__int64 usec)
 	CloseHandle(timer);
 }
 
-static void *gostruct[] = {
+/*static void *gostruct[] = {
     "type pslr_rational_t struct {\n    nom   int32\n    denom int32\n}",
     "type pslr_status struct {\n    bufmask                     uint16\n    current_iso                 uint32\n    current_shutter_speed       pslr_rational_t\n    current_aperture            pslr_rational_t\n    lens_max_aperture           pslr_rational_t\n    lens_min_aperture           pslr_rational_t\n    set_shutter_speed           pslr_rational_t\n    set_aperture                pslr_rational_t\n    max_shutter_speed           pslr_rational_t\n    auto_bracket_mode           uint32\n    auto_bracket_ev             pslr_rational_t\n    auto_bracket_picture_count  uint32\n    auto_bracket_picture_counter uint32\n    fixed_iso                   uint32\n    jpeg_resolution             uint32\n    jpeg_saturation             uint32\n    jpeg_quality                uint32\n    jpeg_contrast               uint32\n    jpeg_sharpness              uint32\n    jpeg_image_tone             uint32\n    jpeg_hue                    uint32\n    zoom                        pslr_rational_t\n    focus                       int32\n    image_format                uint32\n    raw_format                  uint32\n    light_meter_flags           uint32\n    ec                          pslr_rational_t\n    custom_ev_steps             uint32\n    custom_sensitivity_steps    uint32\n    exposure_mode               uint32\n    scene_mode                  uint32\n    user_mode_flag              uint32\n    ae_metering_mode            uint32\n    af_mode                     uint32\n    af_point_select             uint32\n    selected_af_point           uint32\n    focused_af_point            uint32\n    auto_iso_min                uint32\n    auto_iso_max                uint32\n    drive_mode                  uint32\n    shake_reduction             uint32\n    white_balance_mode          uint32\n    white_balance_adjust_mg     uint32\n    white_balance_adjust_ba     uint32\n    flash_mode                  uint32\n    flash_exposure_compensation int32\n    manual_mode_ev              int32\n    color_space                 uint32\n    lens_id1                    uint32\n    lens_id2                    uint32\n    battery_1                   uint32\n    battery_2                   uint32\n    battery_3                   uint32\n    battery_4                   uint32\n}",
     "type pslr_setting_status_t int\n\nconst (\n    PSLR_SETTING_STATUS_UNKNOWN pslr_setting_status_t = iota\n    PSLR_SETTING_STATUS_READ\n    PSLR_SETTING_STATUS_HARDWIRED\n    PSLR_SETTING_STATUS_NA\n)",
@@ -110,7 +108,7 @@ static void *gostruct[] = {
     "type pslr_settings struct {\n    one_push_bracketing        pslr_bool_setting\n    bulb_mode_press_press      pslr_bool_setting\n    bulb_timer                 pslr_bool_setting\n    bulb_timer_sec             pslr_uint16_setting\n    using_aperture_ring        pslr_bool_setting\n    shake_reduction            pslr_bool_setting\n    astrotracer                pslr_bool_setting\n    astrotracer_timer_sec      pslr_uint16_setting\n    horizon_correction         pslr_bool_setting\n    remote_bulb_mode_press_press pslr_bool_setting\n}",
     "type pslr_setting_def_t struct {\n    name    string\n    address uint64\n    value   string\n    _type   string\n}",
     NULL
-};
+};*/
 
 ipslr_handle_t pslr;
 
@@ -654,20 +652,20 @@ char *get_hardwired_setting_uint16_info( pslr_uint16_setting setting) {
 
 char *pslr_get_settings_info( pslr_handle_t h, pslr_settings settings ) {
     char *strbuffer = (char*)malloc(8192);
-    sprintf(strbuffer,"%-32s: %-8s%s\n", "one push bracketing", get_special_setting_info(settings.one_push_bracketing.pslr_setting_status) ? 0 : settings.one_push_bracketing.value ? "on" : "off", get_hardwired_setting_bool_info(settings.one_push_bracketing));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "bulb mode", get_special_setting_info(settings.bulb_mode_press_press.pslr_setting_status) ? 0 : settings.bulb_mode_press_press.value ? "press-press" : "press-hold", get_hardwired_setting_bool_info(settings.bulb_mode_press_press));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "bulb timer", get_special_setting_info(settings.bulb_timer.pslr_setting_status) ? 0 : settings.bulb_timer.value ? "on" : "off", get_hardwired_setting_bool_info(settings.bulb_timer));
+    sprintf(strbuffer,"%-32s: %-8s%s\n", "one push bracketing", get_special_setting_info(settings.one_push_bracketing.pslr_setting_status) ? get_special_setting_info(settings.one_push_bracketing.pslr_setting_status) : settings.one_push_bracketing.value ? "on" : "off", get_hardwired_setting_bool_info(settings.one_push_bracketing));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "bulb mode", get_special_setting_info(settings.bulb_mode_press_press.pslr_setting_status) ? get_special_setting_info(settings.bulb_mode_press_press.pslr_setting_status) : settings.bulb_mode_press_press.value ? "press-press" : "press-hold", get_hardwired_setting_bool_info(settings.bulb_mode_press_press));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "bulb timer", get_special_setting_info(settings.bulb_timer.pslr_setting_status) ? get_special_setting_info(settings.bulb_timer.pslr_setting_status) : settings.bulb_timer.value ? "on" : "off", get_hardwired_setting_bool_info(settings.bulb_timer));
     char *bulb_timer_sec = (char*)malloc(32);
     sprintf(bulb_timer_sec, "%d s", settings.bulb_timer_sec.value);
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "bulb timer sec", get_special_setting_info(settings.bulb_timer_sec.pslr_setting_status) ? 0 : bulb_timer_sec, get_hardwired_setting_uint16_info(settings.bulb_timer_sec));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "remote bulb mode", get_special_setting_info(settings.remote_bulb_mode_press_press.pslr_setting_status) ? 0 : settings.remote_bulb_mode_press_press.value ? "press-press" : "press-hold", get_hardwired_setting_bool_info(settings.remote_bulb_mode_press_press));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "using aperture ring", get_special_setting_info(settings.using_aperture_ring.pslr_setting_status) ? 0 : settings.using_aperture_ring.value ? "on" : "off", get_hardwired_setting_bool_info(settings.using_aperture_ring));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "shake reduction", get_special_setting_info(settings.shake_reduction.pslr_setting_status) ? 0 : settings.shake_reduction.value ? "on" : "off", get_hardwired_setting_bool_info(settings.shake_reduction));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "astrotracer", get_special_setting_info(settings.astrotracer.pslr_setting_status) ? 0 : settings.astrotracer.value ? "on" : "off", get_hardwired_setting_bool_info(settings.astrotracer));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "bulb timer sec", get_special_setting_info(settings.bulb_timer_sec.pslr_setting_status) ? get_special_setting_info(settings.bulb_timer_sec.pslr_setting_status) : bulb_timer_sec, get_hardwired_setting_uint16_info(settings.bulb_timer_sec));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "remote bulb mode", get_special_setting_info(settings.remote_bulb_mode_press_press.pslr_setting_status) ? get_special_setting_info(settings.remote_bulb_mode_press_press.pslr_setting_status) : settings.remote_bulb_mode_press_press.value ? "press-press" : "press-hold", get_hardwired_setting_bool_info(settings.remote_bulb_mode_press_press));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "using aperture ring", get_special_setting_info(settings.using_aperture_ring.pslr_setting_status) ? get_special_setting_info(settings.using_aperture_ring.pslr_setting_status) : settings.using_aperture_ring.value ? "on" : "off", get_hardwired_setting_bool_info(settings.using_aperture_ring));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "shake reduction", get_special_setting_info(settings.shake_reduction.pslr_setting_status) ? get_special_setting_info(settings.shake_reduction.pslr_setting_status) : settings.shake_reduction.value ? "on" : "off", get_hardwired_setting_bool_info(settings.shake_reduction));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "astrotracer", get_special_setting_info(settings.astrotracer.pslr_setting_status) ? get_special_setting_info(settings.astrotracer.pslr_setting_status) : settings.astrotracer.value ? "on" : "off", get_hardwired_setting_bool_info(settings.astrotracer));
     char *astrotracer_timer_sec = (char*)malloc(32);
     sprintf(astrotracer_timer_sec, "%d s", settings.astrotracer_timer_sec.value);
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "astrotracer timer sec", get_special_setting_info(settings.astrotracer_timer_sec.pslr_setting_status) ? 0 : astrotracer_timer_sec, get_hardwired_setting_uint16_info(settings.astrotracer_timer_sec));
-    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "horizon correction", get_special_setting_info(settings.horizon_correction.pslr_setting_status) ? 0 : settings.horizon_correction.value ? "on" : "off", get_hardwired_setting_bool_info(settings.horizon_correction));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "astrotracer timer sec", get_special_setting_info(settings.astrotracer_timer_sec.pslr_setting_status) ? get_special_setting_info(settings.astrotracer_timer_sec.pslr_setting_status) : astrotracer_timer_sec, get_hardwired_setting_uint16_info(settings.astrotracer_timer_sec));
+    sprintf(strbuffer+strlen(strbuffer),"%-32s: %-8s%s\n", "horizon correction", get_special_setting_info(settings.horizon_correction.pslr_setting_status) ? get_special_setting_info(settings.horizon_correction.pslr_setting_status) : settings.horizon_correction.value ? "on" : "off", get_hardwired_setting_bool_info(settings.horizon_correction));
     return strbuffer;
 }
 

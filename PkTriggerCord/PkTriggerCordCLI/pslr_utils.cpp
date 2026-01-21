@@ -28,9 +28,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef WIN32
 #include <windows.h>
 //#include <utime.h>
 #include "tdbtimes.h"
+#else
+#include <sys/time.h>
+#include <unistd.h>
+#endif
 
 #include "pslr.h"
 #include "pslr_utils.h"

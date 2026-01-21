@@ -32,7 +32,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#ifdef WIN32
 #include <windows.h>
+#endif
 
 #define CHECK(x) do {                           \
         int __r;                                \
