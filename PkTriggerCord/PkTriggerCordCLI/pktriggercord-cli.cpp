@@ -785,7 +785,7 @@ int main(int argc, char **argv) {
         frames = 1;
     }
 
-    DPRINT("%s %s \n", argv[0], VERSION);
+    DPRINT("%s %s \n", argv[0], "VERSION");
     DPRINT("model %s\n", model );
     DPRINT("device %s\n", device );
 

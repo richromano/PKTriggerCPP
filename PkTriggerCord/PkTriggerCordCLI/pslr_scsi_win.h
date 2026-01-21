@@ -70,11 +70,11 @@ char **get_drives(int *driveNum) {
     int driveLetter;
     int j=0;
     for ( driveLetter = 'C'; driveLetter<='Z'; ++driveLetter ) {
-
+#ifdef WIN32
 // These Drive types cant be a Pentax. The RAD10 debugger breaks here.
         char root[4];
         snprintf(root, 4, "%c:\\", driveLetter);
-        switch (GetDriveType((LPCWSTR)root)) {
+        switch (GetDriveType(root)) {
             case  DRIVE_UNKNOWN:
             case  DRIVE_NO_ROOT_DIR:
             case  DRIVE_FIXED:
@@ -84,7 +84,7 @@ char **get_drives(int *driveNum) {
             default:
                 ;
         }
-
+#endif
 		ret[j] = (char*)malloc( 2 * sizeof (char) );
         snprintf(ret[j], 2, "%c", driveLetter);
         ++j;
@@ -113,7 +113,7 @@ pslr_result get_drive_info(char* drive_name, int* device,
 
     snprintf( fullDriveName, 7, "\\\\.\\%s:", drive_name);
 
-    hDrive = CreateFile((LPCWSTR)fullDriveName,
+    hDrive = CreateFile(fullDriveName,
                         GENERIC_READ | GENERIC_WRITE,
                         FILE_SHARE_WRITE,
                         NULL,

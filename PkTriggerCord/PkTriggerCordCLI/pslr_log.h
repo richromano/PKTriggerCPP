@@ -44,7 +44,7 @@
 #include <gphoto2/gphoto2-log.h>
 #define DPRINT(x...) gp_log (GP_LOG_DEBUG, "pentax", x)
 #else
-#define DPRINT(x,...) pslr_write_log(PSLR_DEBUG, x)
+#define DPRINT(x,...) pslr_write_log(PSLR_DEBUG, x, __VA_ARGS__)
 #endif
 #endif
 
