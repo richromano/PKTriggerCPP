@@ -99,16 +99,6 @@ void usleep(__int64 usec)
 	CloseHandle(timer);
 }
 
-/*static void *gostruct[] = {
-    "type pslr_rational_t struct {\n    nom   int32\n    denom int32\n}",
-    "type pslr_status struct {\n    bufmask                     uint16\n    current_iso                 uint32\n    current_shutter_speed       pslr_rational_t\n    current_aperture            pslr_rational_t\n    lens_max_aperture           pslr_rational_t\n    lens_min_aperture           pslr_rational_t\n    set_shutter_speed           pslr_rational_t\n    set_aperture                pslr_rational_t\n    max_shutter_speed           pslr_rational_t\n    auto_bracket_mode           uint32\n    auto_bracket_ev             pslr_rational_t\n    auto_bracket_picture_count  uint32\n    auto_bracket_picture_counter uint32\n    fixed_iso                   uint32\n    jpeg_resolution             uint32\n    jpeg_saturation             uint32\n    jpeg_quality                uint32\n    jpeg_contrast               uint32\n    jpeg_sharpness              uint32\n    jpeg_image_tone             uint32\n    jpeg_hue                    uint32\n    zoom                        pslr_rational_t\n    focus                       int32\n    image_format                uint32\n    raw_format                  uint32\n    light_meter_flags           uint32\n    ec                          pslr_rational_t\n    custom_ev_steps             uint32\n    custom_sensitivity_steps    uint32\n    exposure_mode               uint32\n    scene_mode                  uint32\n    user_mode_flag              uint32\n    ae_metering_mode            uint32\n    af_mode                     uint32\n    af_point_select             uint32\n    selected_af_point           uint32\n    focused_af_point            uint32\n    auto_iso_min                uint32\n    auto_iso_max                uint32\n    drive_mode                  uint32\n    shake_reduction             uint32\n    white_balance_mode          uint32\n    white_balance_adjust_mg     uint32\n    white_balance_adjust_ba     uint32\n    flash_mode                  uint32\n    flash_exposure_compensation int32\n    manual_mode_ev              int32\n    color_space                 uint32\n    lens_id1                    uint32\n    lens_id2                    uint32\n    battery_1                   uint32\n    battery_2                   uint32\n    battery_3                   uint32\n    battery_4                   uint32\n}",
-    "type pslr_setting_status_t int\n\nconst (\n    PSLR_SETTING_STATUS_UNKNOWN pslr_setting_status_t = iota\n    PSLR_SETTING_STATUS_READ\n    PSLR_SETTING_STATUS_HARDWIRED\n    PSLR_SETTING_STATUS_NA\n)",
-    "type pslr_bool_setting struct {\n    pslr_setting_status pslr_setting_status_t\n    value               bool\n}",
-    "type pslr_uint16_setting struct {\n    pslr_setting_status pslr_setting_status_t\n    value               uint16\n}",
-    "type pslr_settings struct {\n    one_push_bracketing        pslr_bool_setting\n    bulb_mode_press_press      pslr_bool_setting\n    bulb_timer                 pslr_bool_setting\n    bulb_timer_sec             pslr_uint16_setting\n    using_aperture_ring        pslr_bool_setting\n    shake_reduction            pslr_bool_setting\n    astrotracer                pslr_bool_setting\n    astrotracer_timer_sec      pslr_uint16_setting\n    horizon_correction         pslr_bool_setting\n    remote_bulb_mode_press_press pslr_bool_setting\n}",
-    "type pslr_setting_def_t struct {\n    name    string\n    address uint64\n    value   string\n    _type   string\n}",
-    NULL
-};*/
 
 ipslr_handle_t pslr;
 
@@ -1584,7 +1574,7 @@ int pslr_get_dspinfo(pslr_handle_t *h, char* firmware) {
 }
 
 int pslr_get_setting(pslr_handle_t *h, int offset, uint32_t *value) {
-    ipslr_handle_t *p = (ipslr_handle_t *) h;
+    ipslr_handle_t *p = (ipslr_handle_t *) *h;
     DPRINT("[C]\t\tipslr_get_setting(%d)\n", offset);
     uint8_t buf[4];
     int n;
@@ -1649,7 +1639,7 @@ bool pslr_has_setting_by_name(pslr_handle_t *h, char *name) {
 
 
 int pslr_get_settings(pslr_handle_t *h) {
-    ipslr_handle_t *p = (ipslr_handle_t *) h;
+    ipslr_handle_t *p = (ipslr_handle_t *) *h;
     int index=0;
     uint32_t value;
     int ret;
