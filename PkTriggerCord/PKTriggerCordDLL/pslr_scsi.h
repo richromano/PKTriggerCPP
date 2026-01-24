@@ -62,7 +62,7 @@ typedef struct _GPPort GPPort;
 #define FDTYPE GPPort*
 #else
 /* classic UNIX style handle */
-#define FDTYPE int
+#define FDTYPE HANDLE
 #endif
 
 int scsi_read(FDTYPE sg_fd, uint8_t *cmd, uint32_t cmdLen,

@@ -195,7 +195,7 @@ const char* pslr_scene_mode_str[PSLR_SCENE_MODE_MAX] = {
 
 
 /* case insenstive comparison - strnicmp */
-int str_comparison_i (const char *s1, const char *s2, int n) {
+size_t str_comparison_i (const char *s1, const char *s2, size_t n) {
     if ( s1 == NULL ) {
         return s2 == NULL ? 0 : -(*s2);
     }

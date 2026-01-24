@@ -93,7 +93,7 @@ char **get_drives(int *driveNum) {
     return ret;
 }
 
-pslr_result get_drive_info(char* drive_name, int* device,
+pslr_result get_drive_info(char* drive_name, HANDLE* device,
                            char* vendor_id, int vendor_id_size_max,
                            char* product_id, int product_id_size_max
                           ) {
@@ -136,7 +136,7 @@ pslr_result get_drive_info(char* drive_name, int* device,
                 CancelIo(hDrive);
             }
         } else {
-            *device = (int)hDrive;
+            *device = (HANDLE)hDrive;
             drive_status = PSLR_OK;
 
             pdescriptor = (STORAGE_DEVICE_DESCRIPTOR *)descriptorBuf;
@@ -166,11 +166,11 @@ pslr_result get_drive_info(char* drive_name, int* device,
     return drive_status;
 }
 
-void close_drive(int *device) {
+void close_drive(HANDLE *device) {
     CloseHandle((HANDLE)*device);
 }
 
-int scsi_read(int sg_fd, uint8_t *cmd, uint32_t cmdLen,
+int scsi_read(HANDLE sg_fd, uint8_t *cmd, uint32_t cmdLen,
               uint8_t *buf, uint32_t bufLen) {
     SCSI_PASS_THROUGH_WITH_BUFFER sptdwb;
     DWORD outByte=0;
@@ -222,7 +222,7 @@ int scsi_read(int sg_fd, uint8_t *cmd, uint32_t cmdLen,
     }
 }
 
-int scsi_write(int sg_fd, uint8_t *cmd, uint32_t cmdLen,
+int scsi_write(HANDLE sg_fd, uint8_t *cmd, uint32_t cmdLen,
                uint8_t *buf, uint32_t bufLen) {
     SCSI_PASS_THROUGH_WITH_BUFFER sptdwb;
     DWORD outByte=0;

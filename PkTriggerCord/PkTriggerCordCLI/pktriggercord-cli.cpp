@@ -260,13 +260,13 @@ int open_file(char* output_file, int frameNo, user_file_format_t ufft) {
         ofd = 1;
     } else {
         char *dot = strrchr(output_file, '.');
-        int prefix_length;
+        size_t prefix_length;
         if (dot && !strcmp(dot+1, ufft.extension)) {
             prefix_length = dot - output_file;
         } else {
             prefix_length = strlen(output_file);
         }
-        snprintf(fileName, 256, "%.*s-%04d.%s", prefix_length, output_file, frameNo, ufft.extension);
+        snprintf(fileName, 256, "%.*s-%04d.%s", (int)prefix_length, output_file, frameNo, ufft.extension);
         ofd = _open(fileName, FILE_ACCESS, 0664);
         if (ofd == -1) {
             pslr_write_log(PSLR_ERROR, "Could not open %s\n", output_file);
@@ -300,7 +300,7 @@ There is NO WARRANTY, to the extent permitted by law.\n", name, version, pslr_co
 }
 
 char *command_line(int argc, char **argv) {
-    int len = 0;
+    size_t len = 0;
     int i;
     for (i=0; i<argc; ++i) {
         len += strlen(argv[i])+4;
