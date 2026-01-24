@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PkTriggerCord", "PkTriggerCord\PkTriggerCord.vcxproj", "{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PKTriggerCordCLI", "PkTriggerCordCLI\PkTriggerCordCLI.vcxproj", "{59BEC9F7-F84D-482C-9020-7103091A4052}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PKTriggerCordDLL", "PKTriggerCordDLL\PKTriggerCordDLL.vcxproj", "{885DF050-ECDE-4822-98BA-FC8AAED1061E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PkTriggerCordConsole", "PkTriggerCordConsole\PkTriggerCordConsole.vcxproj", "{ECC5235E-D537-4ABA-864B-972533B8B613}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,14 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Debug|x64.ActiveCfg = Debug|x64
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Debug|x64.Build.0 = Debug|x64
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Debug|x86.ActiveCfg = Debug|Win32
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Debug|x86.Build.0 = Debug|Win32
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Release|x64.ActiveCfg = Release|x64
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Release|x64.Build.0 = Release|x64
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Release|x86.ActiveCfg = Release|Win32
-		{C21D46F0-AA39-4F26-9B9B-5F59C12D1993}.Release|x86.Build.0 = Release|Win32
 		{59BEC9F7-F84D-482C-9020-7103091A4052}.Debug|x64.ActiveCfg = Debug|x64
 		{59BEC9F7-F84D-482C-9020-7103091A4052}.Debug|x64.Build.0 = Debug|x64
 		{59BEC9F7-F84D-482C-9020-7103091A4052}.Debug|x86.ActiveCfg = Debug|Win32
@@ -31,6 +25,22 @@ Global
 		{59BEC9F7-F84D-482C-9020-7103091A4052}.Release|x64.Build.0 = Release|x64
 		{59BEC9F7-F84D-482C-9020-7103091A4052}.Release|x86.ActiveCfg = Release|Win32
 		{59BEC9F7-F84D-482C-9020-7103091A4052}.Release|x86.Build.0 = Release|Win32
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Debug|x64.ActiveCfg = Debug|x64
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Debug|x64.Build.0 = Debug|x64
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Debug|x86.ActiveCfg = Debug|Win32
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Debug|x86.Build.0 = Debug|Win32
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Release|x64.ActiveCfg = Release|x64
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Release|x64.Build.0 = Release|x64
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Release|x86.ActiveCfg = Release|Win32
+		{885DF050-ECDE-4822-98BA-FC8AAED1061E}.Release|x86.Build.0 = Release|Win32
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Debug|x64.ActiveCfg = Debug|x64
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Debug|x64.Build.0 = Debug|x64
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Debug|x86.ActiveCfg = Debug|Win32
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Debug|x86.Build.0 = Debug|Win32
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Release|x64.ActiveCfg = Release|x64
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Release|x64.Build.0 = Release|x64
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Release|x86.ActiveCfg = Release|Win32
+		{ECC5235E-D537-4ABA-864B-972533B8B613}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
