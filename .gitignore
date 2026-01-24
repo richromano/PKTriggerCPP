@@ -8,4 +8,5 @@ PkTriggerCord/PkTriggerCord.VC.db
 PkTriggerCord/PkTriggerCordCLI/Debug/
 PkTriggerCord/PKTriggerCordDLL/Debug/
 PkTriggerCord/PkTriggerCordConsole/Debug/
-PkTriggerCord/PKTriggerCSharp/obj/Debug/
+PkTriggerCord/PKTriggerCSharp/obj/
+PkTriggerCord/PKTriggerCSharp/bin
