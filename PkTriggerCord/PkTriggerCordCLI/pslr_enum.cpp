@@ -204,7 +204,7 @@ size_t str_comparison_i (const char *s1, const char *s2, size_t n) {
     }
 
     char c1='\0', c2='\0';
-    int length=0;
+    size_t length=0;
     while ( length<n && (c1 = tolower (*s1)) == (c2 = tolower (*s2))) {
         if (*s1 == '\0') {
             break;
