@@ -42,7 +42,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <signal.h>
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 //#include <utime.h>
 #include "tdbtime.h"

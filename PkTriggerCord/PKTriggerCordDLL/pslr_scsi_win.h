@@ -70,7 +70,7 @@ char **get_drives(int *driveNum) {
     int driveLetter;
     int j=0;
     for ( driveLetter = 'C'; driveLetter<='Z'; ++driveLetter ) {
-#ifdef WIN32
+#ifdef _WIN32
 // These Drive types cant be a Pentax. The RAD10 debugger breaks here.
         char root[4];
         snprintf(root, 4, "%c:\\", driveLetter);

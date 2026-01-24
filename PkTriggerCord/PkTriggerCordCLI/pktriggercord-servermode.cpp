@@ -27,7 +27,7 @@
     and GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 //#include <utime.h>
 #include "tdbtimes.h"
@@ -35,7 +35,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #endif
-#ifndef WIN32
+#ifndef _WIN32
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -88,7 +88,7 @@ pslr_handle_t pslr_camera_connect( char *model, char *device, int timeout, char 
     return camhandle;
 }
 
-#ifndef WIN32
+#ifndef _WIN32
 int client_sock;
 
 void write_socket_answer( char *answer ) {

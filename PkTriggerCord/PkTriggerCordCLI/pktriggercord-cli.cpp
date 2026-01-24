@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#ifdef WIN32
+#ifdef _WIN32
 //#include <utime.h>
 #include <io.h>
 #include "tdbtimes.h"
@@ -51,7 +51,7 @@
 #include "pslr_log.h"
 #include "pslr_utils.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #define FILE_ACCESS O_WRONLY | O_CREAT | O_TRUNC | O_BINARY
 #else
 #define FILE_ACCESS O_WRONLY | O_CREAT | O_TRUNC
@@ -65,7 +65,7 @@ bool astrotracer_before=false;
 bool need_bulb_new_cleanup=false;
 bool need_one_push_bracketing_cleanup=false;
 
-#ifdef WIN32
+#ifdef _WIN32
 static option const longopts[] = {
 #else
 static struct option const longopts[] = {
@@ -766,7 +766,7 @@ int main(int argc, char **argv) {
     }
 
     if ( servermode ) {
-#ifndef WIN32
+#ifndef _WIN32
         // ignore all the other argument and go to server mode
         servermode_socket(servermode_timeout);
         exit(0);

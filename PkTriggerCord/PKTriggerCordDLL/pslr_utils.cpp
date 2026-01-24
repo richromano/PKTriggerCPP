@@ -53,7 +53,7 @@ PKTRIGGERCORDDLL_API void sleep_sec(double sec) {
     usleep((int)(1000000*(sec-floor(sec))));
 }
 
-PKTRIGGERCORDDLL_API PKTRIGGERCORDDLL_API pslr_rational_t parse_aperture(char *aperture_str) {
+PKTRIGGERCORDDLL_API pslr_rational_t parse_aperture(char *aperture_str) {
     char C;
     float F = 0;
     pslr_rational_t aperture = {0, 0};

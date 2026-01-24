@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#ifdef WIN32
+#ifdef _WIN32
 //#include <utime.h>
 #include <io.h>
 #include "tdbtimes.h"
