@@ -281,135 +281,135 @@ namespace PKTriggerCord
     {
         private const string DllName = "PKTriggerCordDLL";
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, EntryPoint = "pslr_init", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern IntPtr pslr_init(string model, string device);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, EntryPoint = "pslr_connect", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_connect(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_disconnect(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_shutdown(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_shutter(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_focus(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_get_status(IntPtr h, ref PslrStatus sbuf);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_get_settings_json(IntPtr h, ref PslrSettings ps);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern IntPtr pslr_get_status_info(IntPtr h, PslrStatus status);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr pslr_get_settings_info(IntPtr h, PslrSettings settings);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_shutter(IntPtr h, PslrRational value);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_aperture(IntPtr h, PslrRational value);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_iso(IntPtr h, uint value, uint auto_min_value, uint auto_max_value);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_expose_compensation(IntPtr h, PslrRational value);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_white_balance(IntPtr h, PslrWhiteBalanceMode wb_mode);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_white_balance_adjustment(IntPtr h, PslrWhiteBalanceMode wb_mode, uint wbadj_mg, uint wbadj_ba);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_flash_mode(IntPtr h, PslrFlashMode value);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_flash_exposure_compensation(IntPtr h, PslrRational value);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_drive_mode(IntPtr h, PslrDriveMode drive_mode);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_af_mode(IntPtr h, PslrAfMode af_mode);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_af_point_sel(IntPtr h, PslrAfPointSel af_point_sel);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_ae_metering_mode(IntPtr h, PslrAeMetering ae_metering_mode);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_color_space(IntPtr h, PslrColorSpace color_space);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_jpeg_stars(IntPtr h, int jpeg_stars);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_jpeg_resolution(IntPtr h, int megapixel);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_jpeg_image_tone(IntPtr h, PslrJpegImageTone image_mode);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_user_file_format(IntPtr h, UserFileFormat uff);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern UserFileFormat pslr_get_user_file_format(ref PslrStatus st);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_delete_buffer(IntPtr h, int bufno);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_green_button(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_dust_removal(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool pslr_bulb(IntPtr h, [MarshalAs(UnmanagedType.I1)] bool on);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_buffer_open(IntPtr h, int bufno, PslrBufferType type, int resolution);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint pslr_buffer_read(IntPtr h, IntPtr buf, uint size);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint pslr_fullmemory_read(IntPtr h, IntPtr buf, uint offset, uint size);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void pslr_buffer_close(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint pslr_buffer_get_size(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_exposure_mode(IntPtr h, PslrExposureMode mode);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_set_selected_af_point(IntPtr h, uint point);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.LPStr)]
         public static extern string pslr_get_camera_name(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_get_model_max_jpeg_stars(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_get_model_status_buffer_size(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_get_model_fastest_shutter_speed(IntPtr h);
     }
 }

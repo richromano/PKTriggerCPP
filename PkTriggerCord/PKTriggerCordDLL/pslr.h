@@ -40,6 +40,10 @@
 #include "pslr_scsi.h"
 #include "pslr_model.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define PSLR_LIGHT_METER_AE_LOCK 0x8
 
 typedef enum {
@@ -229,4 +233,7 @@ int pslr_test( pslr_handle_t h, bool cmd9_wrap, int subcommand, int argnum,  int
 PKTRIGGERCORDDLL_API char *pslr_copyright(void);
 
 PKTRIGGERCORDDLL_API int pslr_set_debugmode(ipslr_handle_t *p, char debug_mode);
+#ifdef __cplusplus
+}
+#endif
 #endif
