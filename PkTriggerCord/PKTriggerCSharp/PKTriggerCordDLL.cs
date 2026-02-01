@@ -287,7 +287,7 @@ namespace PKTriggerCord
         [DllImport(DllName, EntryPoint = "pslr_connect", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_connect(IntPtr h);
 
-        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport(DllName, EntryPoint = "pslr_disconnect", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_disconnect(IntPtr h);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
