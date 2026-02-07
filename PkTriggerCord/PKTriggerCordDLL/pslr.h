@@ -123,8 +123,8 @@ typedef void (*pslr_progress_callback_t)(uint32_t current, uint32_t total);
 PKTRIGGERCORDDLL_API pslr_handle_t pslr_init(char *model, char *device);
 PKTRIGGERCORDDLL_API int pslr_connect(pslr_handle_t h);
 PKTRIGGERCORDDLL_API int pslr_disconnect(pslr_handle_t h);
-int pslr_shutdown(pslr_handle_t h);
-const char *pslr_model(uint32_t id);
+PKTRIGGERCORDDLL_API int pslr_shutdown(pslr_handle_t h);
+//const char *pslr_model(uint32_t id);
 
 PKTRIGGERCORDDLL_API int pslr_shutter(pslr_handle_t h);
 PKTRIGGERCORDDLL_API int pslr_focus(pslr_handle_t h);

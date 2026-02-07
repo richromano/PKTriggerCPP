@@ -483,7 +483,7 @@ int pslr_disconnect(pslr_handle_t h) {
     return PSLR_OK;
 }
 
-int pslr_shutdown(pslr_handle_t h) {
+PKTRIGGERCORDDLL_API int pslr_shutdown(pslr_handle_t h) {
     DPRINT("[C]\tpslr_shutdown()\n");
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     close_drive(&p->fd);
