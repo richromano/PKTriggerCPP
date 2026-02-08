@@ -375,8 +375,10 @@ namespace PKTriggerCord
         public static extern int pslr_dust_removal(IntPtr h);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool pslr_bulb(IntPtr h, [MarshalAs(UnmanagedType.I1)] bool on);
+        public static extern int pslr_bulb(IntPtr h, [MarshalAs(UnmanagedType.I1)] bool on);
+
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int pslr_continuous(IntPtr h, [MarshalAs(UnmanagedType.I1)] bool on);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_buffer_open(IntPtr h, int bufno, PslrBufferType type, int resolution);
