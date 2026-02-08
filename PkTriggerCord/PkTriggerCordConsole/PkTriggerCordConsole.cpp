@@ -52,7 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "pslr_log.h"
 #include "pslr_utils.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #define FILE_ACCESS O_WRONLY | O_CREAT | O_TRUNC | O_BINARY
 #else
 #define FILE_ACCESS O_WRONLY | O_CREAT | O_TRUNC
@@ -66,7 +66,7 @@ bool astrotracer_before = false;
 bool need_bulb_new_cleanup = false;
 bool need_one_push_bracketing_cleanup = false;
 
-#ifdef WIN32
+#ifdef _WIN32
 static option const longopts[] = {
 #else
 static struct option const longopts[] = {
@@ -341,40 +341,44 @@ void bulb_old(pslr_handle_t camhandle, pslr_rational_t shutter_speed, struct tim
 	pslr_bulb(camhandle, false);
 }
 
-void bulb_new(pslr_handle_t *camhandle, pslr_rational_t shutter_speed) {
-	if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
-		pslr_set_setting_by_name(camhandle, "bulb_timer", 1);
-	}
-	else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
-		pslr_set_setting_by_name(camhandle, "astrotracer", 1);
-	}
-	else {
-		pslr_write_log(PSLR_ERROR, "New bulb mode is not supported for this camera model\n");
-	}
-	int bulb_sec = (int)(shutter_speed.nom / shutter_speed.denom);
-	if (pslr_has_setting_by_name(camhandle, "bulb_timer_sec")) {
-		pslr_set_setting_by_name(camhandle, "bulb_timer_sec", bulb_sec);
-	}
-	else if (pslr_has_setting_by_name(camhandle, "astrotracer_timer_sec")) {
-		pslr_set_setting_by_name(camhandle, "astrotracer_timer_sec", bulb_sec);
-	}
-	else {
-		pslr_write_log(PSLR_ERROR, "New bulb mode is not supported for this camera model\n");
-	}
-	pslr_shutter(camhandle);
+void continuous(pslr_handle_t camhandle, pslr_rational_t shutter_speed, struct timeval prev_time) {
+    DPRINT("continuous\n");
+    struct timeval current_time;
+    pslr_continuous(camhandle, true);
+    pslr_shutter(camhandle);
+    sleep_sec(3);
+    pslr_continuous(camhandle, false);
 }
 
-void bulb_new_cleanup(pslr_handle_t *camhandle) {
-	if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
-		if (!bulb_timer_before) {
-			pslr_set_setting_by_name(camhandle, "bulb_timer", bulb_timer_before);
-		}
-	}
-	else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
-		if (!astrotracer_before) {
-			pslr_set_setting_by_name(camhandle, "astrotracer", astrotracer_before);
-		}
-	}
+void bulb_new(pslr_handle_t camhandle, pslr_rational_t shutter_speed) {
+    if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
+        pslr_set_setting_by_name(camhandle, "bulb_timer", 1);
+    } else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
+        pslr_set_setting_by_name(camhandle, "astrotracer", 1);
+    } else {
+        pslr_write_log(PSLR_ERROR, "New bulb mode is not supported for this camera model\n");
+    }
+    int bulb_sec = (int)(shutter_speed.nom / shutter_speed.denom);
+    if (pslr_has_setting_by_name(camhandle, "bulb_timer_sec")) {
+        pslr_set_setting_by_name(camhandle, "bulb_timer_sec", bulb_sec);
+    } else if (pslr_has_setting_by_name(camhandle, "astrotracer_timer_sec")) {
+        pslr_set_setting_by_name(camhandle, "astrotracer_timer_sec", bulb_sec);
+    } else {
+        pslr_write_log(PSLR_ERROR, "New bulb mode is not supported for this camera model\n");
+    }
+    pslr_shutter(camhandle);
+}
+
+void bulb_new_cleanup(pslr_handle_t camhandle) {
+    if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
+        if (!bulb_timer_before) {
+            pslr_set_setting_by_name(camhandle, "bulb_timer", bulb_timer_before);
+        }
+    } else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
+        if (!astrotracer_before) {
+            pslr_set_setting_by_name(camhandle, "astrotracer", astrotracer_before);
+        }
+    }
 }
 
 int main(int argc, char **argv) {
@@ -800,11 +804,11 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	if (servermode) {
-#ifndef WIN32
-		// ignore all the other argument and go to server mode
-		servermode_socket(servermode_timeout);
-		exit(0);
+    if ( servermode ) {
+#ifndef _WIN32
+        // ignore all the other argument and go to server mode
+        servermode_socket(servermode_timeout);
+        exit(0);
 #else
 		pslr_write_log(PSLR_ERROR, "Servermode is not supported in Windows\n");
 		exit(-1);
@@ -1004,26 +1008,25 @@ int main(int argc, char **argv) {
 	//    pslr_test( camhandle, true, 0x1e, 4, 1, 2, 3, 4);
 	//    pslr_button_test( camhandle, 0x0c, 1 );
 
-	if (read_datetime) {
-		int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
-		pslr_get_datetime(&camhandle, &year, &month, &day, &hour, &min, &sec);
-		printf("%04d/%02d/%02d %02d:%02d:%02d\n", year, month, day, hour, min, sec);
-		pslr_camera_close(camhandle);
-		exit(0);
-	}
+    if (read_datetime) {
+        int year=0, month=0, day=0, hour=0, min=0, sec=0;
+        pslr_get_datetime(camhandle, &year, &month, &day, &hour, &min, &sec);
+        printf("%04d/%02d/%02d %02d:%02d:%02d\n", year, month, day, hour, min, sec);
+        pslr_camera_close(camhandle);
+        exit(0);
+    }
 
-	if (read_firmware_version || PSLR_DEBUG_ENABLED) {
-		char firmware[16];
-		pslr_get_dspinfo(&camhandle, firmware);
-		if (!read_firmware_version) {
-			DPRINT("Firmware version: %s\n", firmware);
-		}
-		else {
-			printf("Firmware version: %s\n", firmware);
-			pslr_camera_close(camhandle);
-			exit(0);
-		}
-	}
+    if (read_firmware_version || PSLR_DEBUG_ENABLED) {
+        char firmware[16];
+        pslr_get_dspinfo( camhandle, firmware );
+        if (!read_firmware_version) {
+            DPRINT("Firmware version: %s\n", firmware);
+        } else {
+            printf("Firmware version: %s\n", firmware);
+            pslr_camera_close(camhandle);
+            exit(0);
+        }
+    }
 
 	// read the status and settings after setting the values
 	if (settings_hex || settings_info || pslr_get_model_has_settings_parser(camhandle)) {
@@ -1071,12 +1074,11 @@ int main(int argc, char **argv) {
 		exit(-1);
 	}
 
-	if (pslr_has_setting_by_name(&camhandle, "bulb_timer")) {
-		bulb_timer_before = settings.bulb_timer.value;
-	}
-	else if (pslr_has_setting_by_name(&camhandle, "astrotracer")) {
-		astrotracer_before = settings.astrotracer.value;
-	}
+    if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
+        bulb_timer_before = settings.bulb_timer.value;
+    } else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
+        astrotracer_before = settings.astrotracer.value;
+    }
 
 	double waitsec = 0;
 	user_file_format_t ufft = *pslr_get_user_file_format_t(uff);
@@ -1088,15 +1090,15 @@ int main(int argc, char **argv) {
 
 	int bracket_index = 0;
 
-	bool continuous = status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_HI ||
-		status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_LO;
-	DPRINT("cont: %d\n", continuous);
+    bool iscontinuous = status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_HI ||
+                      status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_LO;
+    DPRINT("cont: %d\n", iscontinuous);
 
-	if (pslr_get_model_bufmask_single(camhandle) && bracket_count >1 && settings.one_push_bracketing.pslr_setting_status == PSLR_SETTING_STATUS_READ && settings.one_push_bracketing.value) {
-		pslr_set_setting_by_name(&camhandle, "one_push_bracketing", 0);
-		settings.one_push_bracketing.value = false;
-		need_one_push_bracketing_cleanup = true;
-	}
+    if (pslr_get_model_bufmask_single(camhandle) && bracket_count >1 && settings.one_push_bracketing.pslr_setting_status == PSLR_SETTING_STATUS_READ && settings.one_push_bracketing.value) {
+        pslr_set_setting_by_name(camhandle, "one_push_bracketing", 0);
+        settings.one_push_bracketing.value=false;
+        need_one_push_bracketing_cleanup = true;
+    }
 
 	for (frameNo = 0; frameNo < frames; ++frameNo) {
 		gettimeofday(&current_time, NULL);
@@ -1132,58 +1134,57 @@ int main(int argc, char **argv) {
 					break;
 				}
 
-				usleep(100000); /* 100 ms */
-			}
-		}
-		else {
-			if (frames > 1) {
-				printf("Taking picture %d/%d\n", frameNo + 1, frames);
-				fflush(stdout);
-			}
-			if (status.exposure_mode == PSLR_GUI_EXPOSURE_MODE_B) {
-				if (pslr_get_model_old_bulb_mode(camhandle)) {
-					bulb_old(camhandle, shutter_speed, prev_time);
-				}
-				else {
-					need_bulb_new_cleanup = true;
-					bulb_new(&camhandle, shutter_speed);
-				}
-			}
-			else {
-				DPRINT("not bulb\n");
-				if (!settings.one_push_bracketing.value || bracket_index == 0) {
-					pslr_shutter(camhandle);
-				}
-				else {
-					// TODO: fix waiting time
-					sleep_sec(1);
-				}
-			}
-			pslr_get_status(camhandle, &status);
-		}
-		if (bracket_index + 1 >= bracket_count || frameNo + 1 >= frames || pslr_get_model_bufmask_single(camhandle)) {
-			int bracket_download = pslr_get_model_bufmask_single(camhandle) ? 1 : (bracket_index + 1 < bracket_count ? bracket_index + 1 : bracket_count);
-			int buffer_index;
-			for (buffer_index = 0; buffer_index < bracket_download; ++buffer_index) {
-				fd = open_file(output_file, counter + frameNo - bracket_download + buffer_index + 1, ufft);
-				while (save_buffer(camhandle, buffer_index, fd, &status, uff, quality)) {
-					usleep(10000);
-				}
-				pslr_delete_buffer(camhandle, buffer_index);
-				if (fd != 1) {
-					_close(fd);
-				}
-			}
-		}
-		++bracket_index;
-	}
-	if (need_bulb_new_cleanup) {
-		bulb_new_cleanup(&camhandle);
-	}
-	if (need_one_push_bracketing_cleanup) {
-		pslr_set_setting_by_name(&camhandle, "one_push_bracketing", 1);
-	}
-	pslr_camera_close(camhandle);
+                usleep(100000); /* 100 ms */
+            }
+        } else {
+            if ( frames > 1 ) {
+                printf("Taking picture %d/%d\n", frameNo+1, frames);
+                fflush(stdout);
+            }
+            if (status.exposure_mode == PSLR_GUI_EXPOSURE_MODE_B) {
+                if (pslr_get_model_old_bulb_mode(camhandle)) {
+                    bulb_old(camhandle, shutter_speed, prev_time);
+                }
+                else {
+                    need_bulb_new_cleanup = true;
+                    bulb_new(camhandle, shutter_speed);
+                }
+            } else if (iscontinuous) {
+                continuous(camhandle, shutter_speed, prev_time);
+            } else {
+                DPRINT("not bulb\n");
+                if (!settings.one_push_bracketing.value || bracket_index == 0) {
+                    pslr_shutter(camhandle);
+                } else {
+                    // TODO: fix waiting time
+                    sleep_sec(1);
+                }
+            }
+            pslr_get_status(camhandle, &status);
+        }
+        if ( bracket_index+1 >= bracket_count || frameNo+1>=frames || pslr_get_model_bufmask_single(camhandle) ) {
+            int bracket_download = pslr_get_model_bufmask_single(camhandle) ? 1 : (bracket_index+1 < bracket_count ? bracket_index+1 : bracket_count);
+            int buffer_index;
+            for ( buffer_index = 0; buffer_index < bracket_download; ++buffer_index ) {
+                fd = open_file(output_file, counter+frameNo-bracket_download+buffer_index+1, ufft);
+                while ( save_buffer(camhandle, buffer_index, fd, &status, uff, quality) ) {
+                    usleep(10000);
+                }
+                pslr_delete_buffer(camhandle, buffer_index);
+                if (fd != 1) {
+                    _close(fd);
+                }
+            }
+        }
+        ++bracket_index;
+    }
+    if (need_bulb_new_cleanup) {
+        bulb_new_cleanup(camhandle);
+    }
+    if (need_one_push_bracketing_cleanup) {
+        pslr_set_setting_by_name(camhandle, "one_push_bracketing", 1);
+    }
+    pslr_camera_close(camhandle);
 
 	exit(0);
 }

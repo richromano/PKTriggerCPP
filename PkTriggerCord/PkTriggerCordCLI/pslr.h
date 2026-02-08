@@ -120,7 +120,7 @@ pslr_handle_t pslr_init(char *model, char *device);
 int pslr_connect(pslr_handle_t h);
 int pslr_disconnect(pslr_handle_t h);
 int pslr_shutdown(pslr_handle_t h);
-const char *pslr_model(uint32_t id);
+//const char *pslr_model(uint32_t id);
 
 int pslr_shutter(pslr_handle_t h);
 int pslr_focus(pslr_handle_t h);
@@ -180,6 +180,8 @@ int pslr_dust_removal(pslr_handle_t h);
 
 int pslr_bulb(pslr_handle_t h, bool on );
 
+int pslr_continuous(pslr_handle_t h, bool on);
+
 int pslr_buffer_open(pslr_handle_t h, int bufno, pslr_buffer_type type, int resolution);
 uint32_t pslr_buffer_read(pslr_handle_t h, uint8_t *buf, uint32_t size);
 uint32_t pslr_fullmemory_read(pslr_handle_t h, uint8_t *buf, uint32_t offset, uint32_t size);
@@ -211,15 +213,15 @@ bool pslr_get_model_bufmask_single(pslr_handle_t h);
 pslr_buffer_type pslr_get_jpeg_buffer_type(pslr_handle_t h, int quality);
 int pslr_get_jpeg_resolution(pslr_handle_t h, int hwres);
 
-int pslr_get_datetime(pslr_handle_t *h, int *year, int *month, int *day, int *hour, int *min, int *sec);
+int pslr_get_datetime(pslr_handle_t h, int *year, int *month, int *day, int *hour, int *min, int *sec);
 
-int pslr_get_dspinfo(pslr_handle_t *h, char *firmware);
+int pslr_get_dspinfo(pslr_handle_t h, char *firmware);
 
-int pslr_get_setting(pslr_handle_t *h, int offset, uint32_t *value);
-int pslr_set_setting(pslr_handle_t *h, int offset, uint32_t value);
-int pslr_set_setting_by_name(pslr_handle_t *h, char *name, uint32_t value);
-bool pslr_has_setting_by_name(pslr_handle_t *h, char *name);
-int pslr_get_settings(pslr_handle_t *h);
+int pslr_get_setting(pslr_handle_t h, int offset, uint32_t *value);
+int pslr_set_setting(pslr_handle_t h, int offset, uint32_t value);
+int pslr_set_setting_by_name(pslr_handle_t h, char *name, uint32_t value);
+bool pslr_has_setting_by_name(pslr_handle_t h, char *name);
+int pslr_get_settings(pslr_handle_t h);
 
 pslr_gui_exposure_mode_t exposure_mode_conversion( pslr_exposure_mode_t exp );
 char *pslr_format_rational( pslr_rational_t rational, char * fmt );

@@ -43,7 +43,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <signal.h>
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 //#include <utime.h>
 #include "tdbtime.h"
@@ -984,6 +984,15 @@ PKTRIGGERCORDDLL_API int pslr_bulb(pslr_handle_t h, bool on ) {
     return PSLR_OK;
 }
 
+PKTRIGGERCORDDLL_API int pslr_continuous(pslr_handle_t h, bool on) {
+    DPRINT("[C]\tpslr_continous(%d)\n", on);
+    ipslr_handle_t* p = (ipslr_handle_t*)h;
+    CHECK(ipslr_write_args(p, 1, on ? 1 : 0));
+    CHECK(command(p->fd, 0x10, X10_CONTINUOUS, 0x04));
+    CHECK(get_status(p->fd));
+    return PSLR_OK;
+}
+
 int pslr_button_test(pslr_handle_t h, int bno, int arg) {
     DPRINT("[C]\tpslr_button_test(%X, %X)\n", bno, arg);
     int r;
@@ -1522,7 +1531,7 @@ static int ipslr_identify(ipslr_handle_t *p) {
     return PSLR_OK;
 }
 
-int pslr_get_datetime(pslr_handle_t *h, int *year, int *month, int *day, int *hour, int *min, int *sec) {
+int pslr_get_datetime(pslr_handle_t h, int *year, int *month, int *day, int *hour, int *min, int *sec) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_get_datetime()\n");
     uint8_t idbuf[800];
@@ -1551,7 +1560,7 @@ int pslr_get_datetime(pslr_handle_t *h, int *year, int *month, int *day, int *ho
     return PSLR_OK;
 }
 
-int pslr_get_dspinfo(pslr_handle_t *h, char* firmware) {
+int pslr_get_dspinfo(pslr_handle_t h, char* firmware) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_get_dspinfo()\n");
     uint8_t buf[4];
@@ -1572,8 +1581,8 @@ int pslr_get_dspinfo(pslr_handle_t *h, char* firmware) {
     return PSLR_OK;
 }
 
-int pslr_get_setting(pslr_handle_t *h, int offset, uint32_t *value) {
-    ipslr_handle_t *p = (ipslr_handle_t *) *h;
+int pslr_get_setting(pslr_handle_t h, int offset, uint32_t *value) {
+    ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_get_setting(%d)\n", offset);
     uint8_t buf[4];
     int n;
@@ -1596,7 +1605,7 @@ int pslr_get_setting(pslr_handle_t *h, int offset, uint32_t *value) {
     return PSLR_OK;
 }
 
-int pslr_set_setting(pslr_handle_t *h, int offset, uint32_t value) {
+int pslr_set_setting(pslr_handle_t h, int offset, uint32_t value) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     DPRINT("[C]\t\tipslr_set_setting(%d)=%d\n", offset, value);
     CHECK(ipslr_cmd_00_09(p, 1));
@@ -1606,7 +1615,7 @@ int pslr_set_setting(pslr_handle_t *h, int offset, uint32_t value) {
     return PSLR_OK;
 }
 
-PKTRIGGERCORDDLL_API int pslr_set_setting_by_name(pslr_handle_t *h, char *name, uint32_t value) {
+PKTRIGGERCORDDLL_API int pslr_set_setting_by_name(pslr_handle_t h, char *name, uint32_t value) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     int def_num;
     char cameraid[10];
@@ -1625,7 +1634,7 @@ PKTRIGGERCORDDLL_API int pslr_set_setting_by_name(pslr_handle_t *h, char *name, 
     return PSLR_OK;
 }
 
-PKTRIGGERCORDDLL_API bool pslr_has_setting_by_name(pslr_handle_t *h, char *name) {
+PKTRIGGERCORDDLL_API bool pslr_has_setting_by_name(pslr_handle_t h, char *name) {
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     int def_num;
     char cameraid[10];
@@ -1637,8 +1646,8 @@ PKTRIGGERCORDDLL_API bool pslr_has_setting_by_name(pslr_handle_t *h, char *name)
 }
 
 
-int pslr_get_settings(pslr_handle_t *h) {
-    ipslr_handle_t *p = (ipslr_handle_t *) *h;
+int pslr_get_settings(pslr_handle_t h) {
+    ipslr_handle_t *p = (ipslr_handle_t *) h;
     int index=0;
     uint32_t value;
     int ret;
@@ -1656,7 +1665,7 @@ int pslr_get_settings_json(pslr_handle_t h, pslr_settings *ps) {
     DPRINT("[C]\tpslr_get_settings_json()\n");
     ipslr_handle_t *p = (ipslr_handle_t *) h;
     memset( ps, 0, sizeof( pslr_settings ));
-    CHECK(pslr_get_settings(&h));
+    CHECK(pslr_get_settings(h));
     char cameraid[20];
     sprintf(cameraid, "0x%05x", p->id);
     DPRINT("cameraid:%s\n", cameraid);

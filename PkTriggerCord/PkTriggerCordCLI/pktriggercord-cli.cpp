@@ -328,7 +328,16 @@ void bulb_old(pslr_handle_t camhandle, pslr_rational_t shutter_speed, struct tim
     pslr_bulb( camhandle, false );
 }
 
-void bulb_new(pslr_handle_t *camhandle, pslr_rational_t shutter_speed) {
+void continuous(pslr_handle_t camhandle, pslr_rational_t shutter_speed, struct timeval prev_time) {
+    DPRINT("continuous\n");
+    struct timeval current_time;
+    pslr_continuous(camhandle, true);
+    pslr_shutter(camhandle);
+    sleep_sec(3);
+    pslr_continuous(camhandle, false);
+}
+
+void bulb_new(pslr_handle_t camhandle, pslr_rational_t shutter_speed) {
     if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
         pslr_set_setting_by_name(camhandle, "bulb_timer", 1);
     } else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
@@ -347,7 +356,7 @@ void bulb_new(pslr_handle_t *camhandle, pslr_rational_t shutter_speed) {
     pslr_shutter(camhandle);
 }
 
-void bulb_new_cleanup(pslr_handle_t *camhandle) {
+void bulb_new_cleanup(pslr_handle_t camhandle) {
     if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
         if (!bulb_timer_before) {
             pslr_set_setting_by_name(camhandle, "bulb_timer", bulb_timer_before);
@@ -966,7 +975,7 @@ int main(int argc, char **argv) {
 
     if (read_datetime) {
         int year=0, month=0, day=0, hour=0, min=0, sec=0;
-        pslr_get_datetime(&camhandle, &year, &month, &day, &hour, &min, &sec);
+        pslr_get_datetime(camhandle, &year, &month, &day, &hour, &min, &sec);
         printf("%04d/%02d/%02d %02d:%02d:%02d\n", year, month, day, hour, min, sec);
         pslr_camera_close(camhandle);
         exit(0);
@@ -974,7 +983,7 @@ int main(int argc, char **argv) {
 
     if (read_firmware_version || PSLR_DEBUG_ENABLED) {
         char firmware[16];
-        pslr_get_dspinfo( &camhandle, firmware );
+        pslr_get_dspinfo( camhandle, firmware );
         if (!read_firmware_version) {
             DPRINT("Firmware version: %s\n", firmware);
         } else {
@@ -1029,9 +1038,9 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    if (pslr_has_setting_by_name(&camhandle, "bulb_timer")) {
+    if (pslr_has_setting_by_name(camhandle, "bulb_timer")) {
         bulb_timer_before = settings.bulb_timer.value;
-    } else if (pslr_has_setting_by_name(&camhandle, "astrotracer")) {
+    } else if (pslr_has_setting_by_name(camhandle, "astrotracer")) {
         astrotracer_before = settings.astrotracer.value;
     }
 
@@ -1045,12 +1054,12 @@ int main(int argc, char **argv) {
 
     int bracket_index=0;
 
-    bool continuous = status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_HI ||
+    bool iscontinuous = status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_HI ||
                       status.drive_mode == PSLR_DRIVE_MODE_CONTINUOUS_LO;
-    DPRINT("cont: %d\n", continuous);
+    DPRINT("cont: %d\n", iscontinuous);
 
     if (pslr_get_model_bufmask_single(camhandle) && bracket_count >1 && settings.one_push_bracketing.pslr_setting_status == PSLR_SETTING_STATUS_READ && settings.one_push_bracketing.value) {
-        pslr_set_setting_by_name(&camhandle, "one_push_bracketing", 0);
+        pslr_set_setting_by_name(camhandle, "one_push_bracketing", 0);
         settings.one_push_bracketing.value=false;
         need_one_push_bracketing_cleanup = true;
     }
@@ -1096,13 +1105,16 @@ int main(int argc, char **argv) {
                 printf("Taking picture %d/%d\n", frameNo+1, frames);
                 fflush(stdout);
             }
-            if ( status.exposure_mode ==  PSLR_GUI_EXPOSURE_MODE_B ) {
+            if (status.exposure_mode == PSLR_GUI_EXPOSURE_MODE_B) {
                 if (pslr_get_model_old_bulb_mode(camhandle)) {
                     bulb_old(camhandle, shutter_speed, prev_time);
-                } else {
-                    need_bulb_new_cleanup = true;
-                    bulb_new(&camhandle, shutter_speed);
                 }
+                else {
+                    need_bulb_new_cleanup = true;
+                    bulb_new(camhandle, shutter_speed);
+                }
+            } else if (iscontinuous) {
+                continuous(camhandle, shutter_speed, prev_time);
             } else {
                 DPRINT("not bulb\n");
                 if (!settings.one_push_bracketing.value || bracket_index == 0) {
@@ -1131,10 +1143,10 @@ int main(int argc, char **argv) {
         ++bracket_index;
     }
     if (need_bulb_new_cleanup) {
-        bulb_new_cleanup(&camhandle);
+        bulb_new_cleanup(camhandle);
     }
     if (need_one_push_bracketing_cleanup) {
-        pslr_set_setting_by_name(&camhandle, "one_push_bracketing", 1);
+        pslr_set_setting_by_name(camhandle, "one_push_bracketing", 1);
     }
     pslr_camera_close(camhandle);
 
