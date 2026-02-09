@@ -387,6 +387,9 @@ namespace PKTriggerCord
         public static extern bool pslr_get_model_old_bulb_mode(IntPtr h);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern bool pslr_get_model_bufmask_single(IntPtr h);
+
+        [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint pslr_buffer_read(IntPtr h, IntPtr buf, uint size);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
