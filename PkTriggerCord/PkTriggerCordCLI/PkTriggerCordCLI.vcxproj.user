@@ -5,11 +5,11 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-F 2 -o test --drive_mode Continuous-LO --file_format JPEG -q 1</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-F 2 -o test --drive_mode Continuous-LO  --file_format JPEG -q 1 --debug</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-F 2 -o test --drive_mode Continuous-LO --file_format JPEG -q 1</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-F 2 -o test --file_format JPEG -q 1 --debug</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

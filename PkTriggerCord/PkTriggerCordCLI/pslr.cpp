@@ -1360,6 +1360,11 @@ static int ipslr_status_full(ipslr_handle_t *p, pslr_status *status) {
     }
     DPRINT("\texpected_bufsize: %d\n",expected_bufsize);
 
+    if(expected_bufsize > 0 && expected_bufsize != n) {
+        DPRINT("\tWaiting for %d bytes but got %d\n", expected_bufsize, n);
+        return PSLR_READ_ERROR;
+    }
+
     CHECK(read_result(p->fd, p->status_buffer, n > MAX_STATUS_BUF_SIZE ? MAX_STATUS_BUF_SIZE: n));
 
     if ( expected_bufsize == 0 || !p->model->status_parser_function ) {

@@ -61,6 +61,10 @@ typedef enum {
 
 extern pslr_verbosity_t verbosity_level;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 PKTRIGGERCORDDLL_API void pslr_set_verbosity(pslr_verbosity_t verbosity);
 PKTRIGGERCORDDLL_API pslr_verbosity_t pslr_get_verbosity();
 
@@ -68,5 +72,10 @@ PKTRIGGERCORDDLL_API bool pslr_verbosity_enabled(pslr_verbosity_t level);
 
 //TODO : offer a write_log_callback equivalent so a caller can fully configure what happends when pslr_write_log is called ?
 PKTRIGGERCORDDLL_API void pslr_write_log(pslr_verbosity_t level, const char* message, ...);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
