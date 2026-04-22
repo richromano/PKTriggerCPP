@@ -176,7 +176,7 @@ PKTRIGGERCORDDLL_API int pslr_delete_buffer(pslr_handle_t h, int bufno);
 
 PKTRIGGERCORDDLL_API int pslr_green_button(pslr_handle_t h);
 
-int pslr_button_test(pslr_handle_t h, int bno, int arg);
+PKTRIGGERCORDDLL_API int pslr_button_test(pslr_handle_t h, int bno, int arg);
 
 int pslr_ae_lock(pslr_handle_t h, bool lock);
 

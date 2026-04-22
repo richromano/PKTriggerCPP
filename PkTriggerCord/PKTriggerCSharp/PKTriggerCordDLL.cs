@@ -284,6 +284,12 @@ namespace PKTriggerCord
         [DllImport(DllName, EntryPoint = "pslr_init", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern IntPtr pslr_init(string model, string device);
 
+        [DllImport(DllName, EntryPoint = "pslr_set_verbosity", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern IntPtr pslr_set_verbosity(int verbosity);
+
+        [DllImport(DllName, EntryPoint = "pslr_button_test", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int pslr_button_test(IntPtr h, int a, int b);
+
         [DllImport(DllName, EntryPoint = "pslr_connect", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int pslr_connect(IntPtr h);
 

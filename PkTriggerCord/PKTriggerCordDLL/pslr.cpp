@@ -993,12 +993,18 @@ PKTRIGGERCORDDLL_API int pslr_continuous(pslr_handle_t h, bool on) {
     return PSLR_OK;
 }
 
-int pslr_button_test(pslr_handle_t h, int bno, int arg) {
+PKTRIGGERCORDDLL_API int pslr_button_test(pslr_handle_t h, int bno, int arg) {
     DPRINT("[C]\tpslr_button_test(%X, %X)\n", bno, arg);
     int r;
     ipslr_handle_t *p = (ipslr_handle_t *) h;
-    CHECK(ipslr_write_args(p, 1, arg));
-    CHECK(command(p->fd, 0x10, bno, 4));
+    if (arg >= 0)
+    {
+        CHECK(ipslr_write_args(p, 1, arg));
+        CHECK(command(p->fd, 0x10, bno, 4));
+    }
+    else
+        CHECK(command(p->fd, 0x10, bno, 0));
+
     r = get_status(p->fd);
     DPRINT("\tbutton result code: 0x%x\n", r);
     return PSLR_OK;
