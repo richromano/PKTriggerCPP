@@ -977,7 +977,7 @@ void ipslr_settings_parser_json(const char *cameraid, ipslr_handle_t *p, pslr_se
 
 
 ipslr_model_info_t camera_models[] = {
-    { 0x12aa2, "*ist DS",     true,  true,  true,  false, false, false, 264, 3, {6, 4, 2},       5, 4000, 200, 3200, 200,  3200,  PSLR_JPEG_IMAGE_TONE_BRIGHT,           false, 11, ipslr_status_parse_istds},
+    { 0x12aa2, "*ist DS",     true,  true,  true,  false, false, false, 264, 3, {6, 4, 2},       5, 3000, 200, 2000, 200,  3200,  PSLR_JPEG_IMAGE_TONE_BRIGHT,           false, 11, ipslr_status_parse_istds},
     { 0x12cd2, "K20D",        false, true,  true,  false, false, false, 412, 4, {14, 10, 6, 2},  7, 4000, 100, 3200, 100,  6400,  PSLR_JPEG_IMAGE_TONE_MONOCHROME,       true,  11, ipslr_status_parse_k20d},
     { 0x12c1e, "K10D",        false, true,  true,  false, false, false, 392, 3, {10, 6, 2},      7, 4000, 100, 1600, 100,  1600,  PSLR_JPEG_IMAGE_TONE_BRIGHT,           false, 11, ipslr_status_parse_k10d},
     { 0x12c20, "GX10",        false, true,  true,  false, false, false, 392, 3, {10, 6, 2},      7, 4000, 100, 1600, 100,  1600,  PSLR_JPEG_IMAGE_TONE_BRIGHT,           false, 11, ipslr_status_parse_k10d},
@@ -1004,7 +1004,7 @@ ipslr_model_info_t camera_models[] = {
     { 0x12b80, "GX-1L",       true,  true,  true,  false, false, false, 0,   3, {6, 4, 2}, 5, 4000, 200, 3200, 200, 3200, PSLR_JPEG_IMAGE_TONE_BRIGHT, false, 11, NULL},
     { 0x12b9d, "K110D",       false, true,  true,  false, false, false, 0,   3, {6, 4, 2}, 5, 4000, 200, 3200, 200, 3200, PSLR_JPEG_IMAGE_TONE_BRIGHT, false, 11, NULL},
     { 0x12b9c, "K100D",       true,  true,  true,  false, false, false, 0,   3, {6, 4, 2}, 5, 4000, 200, 3200, 200, 3200, PSLR_JPEG_IMAGE_TONE_BRIGHT, false, 11, NULL},
-    { 0x12ba2, "K100D Super", true,  true,  true,  false, false, false, 0,   3, {6, 4, 2}, 5, 4000, 200, 3200, 200, 3200, PSLR_JPEG_IMAGE_TONE_BRIGHT, false, 11, NULL},
+    { 0x12ba2, "K100D Super", true,  true,  true,  false, false, false, 264,   3, {6, 4, 2}, 5, 3000, 200, 2000, 200, 3200, PSLR_JPEG_IMAGE_TONE_BRIGHT, false, 11, ipslr_status_parse_istds},
     { 0x1301a, "K-S1",        false, true,  true,  false, false, true,  452,  3, {20, 12, 6, 2}, 9, 6000, 100, 51200, 100, 51200, PSLR_JPEG_IMAGE_TONE_CROSS_PROCESSING, true,  11, ipslr_status_parse_ks1},
     { 0x13024, "K-S2",        false, true,  true,  false, false, true,  452,  3, {20, 12, 6, 2}, 9, 6000, 100, 51200, 100, 51200, PSLR_JPEG_IMAGE_TONE_CROSS_PROCESSING, true,  11, ipslr_status_parse_k3},
     { 0x13092, "K-1",         false, false, true,  true,  false, true,  456,  3, {36, 22, 12, 2}, 9, 8000, 100, 204800, 100, 204800, PSLR_JPEG_IMAGE_TONE_FLAT, true,  33, ipslr_status_parse_k1 },

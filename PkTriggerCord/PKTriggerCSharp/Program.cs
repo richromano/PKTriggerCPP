@@ -51,9 +51,9 @@ namespace PKTriggerCSharp
                         //                        PKTriggerCord.PKTriggerCordDLL.pslr_button_test(camHandle, 0, 0);
                         //PKTriggerCord.PKTriggerCordDLL.pslr_shutter(camHandle);
                         //PKTriggerCord.PKTriggerCordDLL.pslr_button_test(camHandle, i, 0);
-                        PKTriggerCord.PKTriggerCordDLL.pslr_bulb(camHandle, true);
-                        PKTriggerCord.PKTriggerCordDLL.pslr_shutter(camHandle);
-                        PKTriggerCord.PKTriggerCordDLL.pslr_bulb(camHandle, false);
+                        //PKTriggerCord.PKTriggerCordDLL.pslr_bulb(camHandle, true);
+                        //PKTriggerCord.PKTriggerCordDLL.pslr_shutter(camHandle);
+                        //PKTriggerCord.PKTriggerCordDLL.pslr_bulb(camHandle, false);
                         //Thread.Sleep(2000);
                     }
                     //                        PKTriggerCord.PKTriggerCordDLL.pslr_button_test(camHandle, 1, 0);
