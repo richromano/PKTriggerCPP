@@ -322,8 +322,14 @@ static
 void ipslr_status_parse_istds(ipslr_handle_t *p, pslr_status *status) {
 
     uint8_t *buf = p->status_buffer;
+
+    if (PSLR_DEBUG_ENABLED) {
+        ipslr_status_diff(buf);
+    }
+
     /* *ist DS status block */
     memset(status, 0, sizeof (*status));
+    status->exposure_mode = get_uint32_be(&buf[0x0a]);
     status->bufmask = get_uint16_be(&buf[0x12]);
     status->set_shutter_speed.nom = get_uint32_be(&buf[0x80]);
     status->set_shutter_speed.denom = get_uint32_be(&buf[0x84]);
