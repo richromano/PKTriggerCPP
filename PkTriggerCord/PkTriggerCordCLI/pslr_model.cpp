@@ -345,6 +345,8 @@ void ipslr_status_parse_istds(ipslr_handle_t *p, pslr_status *status) {
 
     // no DNG support so raw format is PEF
     status->raw_format = PSLR_RAW_FORMAT_PEF;
+    status->jpeg_quality = 3;
+    status->jpeg_resolution = 6;
 }
 
 // some of the cameras share most of the status fields
