@@ -318,6 +318,7 @@ void ipslr_status_parse_k20d(ipslr_handle_t *p, pslr_status *status) {
     // 0x160 and 0x164 change when AF
 }
 
+// This is for the K100D Super
 static
 void ipslr_status_parse_istds(ipslr_handle_t *p, pslr_status *status) {
 
@@ -329,16 +330,18 @@ void ipslr_status_parse_istds(ipslr_handle_t *p, pslr_status *status) {
 
     /* *ist DS status block */
     memset(status, 0, sizeof (*status));
-    status->exposure_mode = get_uint16_be(&buf[0x1a]);
-    status->bufmask = get_uint16_be(&buf[0x12]);
-    status->set_shutter_speed.nom = get_uint32_be(&buf[0x80]);
-    status->set_shutter_speed.denom = get_uint32_be(&buf[0x84]);
-    status->set_aperture.nom = get_uint32_be(&buf[0x88]);
-    status->set_aperture.denom = get_uint32_be(&buf[0x8c]);
-    status->lens_min_aperture.nom = get_uint32_be(&buf[0xb8]);
-    status->lens_min_aperture.denom = get_uint32_be(&buf[0xbc]);
-    status->lens_max_aperture.nom = get_uint32_be(&buf[0xc0]);
-    status->lens_max_aperture.denom = get_uint32_be(&buf[0xc4]);
+    status->exposure_mode = get_uint32_be(&buf[0x18]); // good
+    status->current_iso = get_uint32_be(&buf[0xa8]); // good
+    status->bufmask = get_uint16_be(&buf[0x12]); // good
+    status->image_format = get_uint32_be(&buf[0xb0]);
+    status->set_shutter_speed.nom = get_uint32_be(&buf[0x80]);  // good
+    status->set_shutter_speed.denom = get_uint32_be(&buf[0x84]); // good
+    status->set_aperture.nom = get_uint32_be(&buf[0x88]); // good
+    status->set_aperture.denom = get_uint32_be(&buf[0x8c]); // good
+    status->lens_min_aperture.nom = get_uint32_be(&buf[0xb8]); // good
+    status->lens_min_aperture.denom = get_uint32_be(&buf[0xbc]); // good
+    status->lens_max_aperture.nom = get_uint32_be(&buf[0xc0]); // good
+    status->lens_max_aperture.denom = get_uint32_be(&buf[0xc4]); // good
 
     // no DNG support so raw format is PEF
     status->raw_format = PSLR_RAW_FORMAT_PEF;
