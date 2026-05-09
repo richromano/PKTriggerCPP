@@ -1083,40 +1083,31 @@ int pslr_buffer_open(pslr_handle_t h, int bufno, pslr_buffer_type buftype, int b
 
     i = 0;
     j = 0;
-    int lastB = 0;
     do {
         CHECK(ipslr_buffer_segment_info(p, &info));
         DPRINT("\t%d: Addr: 0x%X Len: %d(0x%08X) A=%d B=%d\n", i, info.addr, info.length, info.length, info.a, info.b);
         if (info.b == 4) {
             p->segments[j].offset = info.length;
-            lastB = 4;
         } else if (info.b == 3) {
-            if (lastB == 4)
             {
                 if (j == MAX_SEGMENTS) {
-                    DPRINT("\tToo many segments.\n");
+                    DPRINT("\tToo many B3 segments.\n");
                     return PSLR_NO_MEMORY;
                 }
                 p->segments[j].addr = info.addr;
                 p->segments[j].length = info.length;
+                p->segments[j].offset = buf_total;
                 buf_total += info.length;
                 j++;
-                lastB = 3;
             }
-            else if (lastB == 0)
-            {
-                // fake 4
-                p->segments[j].offset = buf_total;
-                lastB = 4;
-            }
-            else
-                lastB = 0;
-                
-
         }
         CHECK(ipslr_next_segment(p));
         i++;
-    } while (i < 9 && info.b != 2);
+    } while (i < 18 && info.b != 2);
+    if (i == 18) {
+        DPRINT("\tToo many segments.\n");
+        return PSLR_READ_ERROR;
+    }
     p->segment_count = j;
     p->offset = 0;
     return PSLR_OK;
