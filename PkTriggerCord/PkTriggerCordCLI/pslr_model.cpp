@@ -986,6 +986,31 @@ void ipslr_settings_parser_json(const char *cameraid, ipslr_handle_t *p, pslr_se
     }
 }
 
+/* Repeated here
+typedef struct {
+    uint32_t id;                                     // Pentax model ID
+    const char* name;                                // name
+    bool old_scsi_command;                           // true for *ist cameras, false for the newer cameras
+    bool old_bulb_mode;                              // true for older cameras
+    bool need_exposure_mode_conversion;              // is exposure_mode_conversion required
+    bool bufmask_command;                            // true if bufmask determined by calling command 0x02 0x00
+    bool bufmask_single;                             // true if buffer cannot handle multiple images
+    bool is_little_endian;                           // whether the return value should be parsed as little-endian
+    int status_buffer_size;                          // status buffer size in bytes
+    int max_jpeg_stars;                              // maximum jpeg stars
+    int jpeg_resolutions[MAX_RESOLUTION_SIZE];       // jpeg resolution table
+    int jpeg_property_levels;                        // 5 [-2, 2] or 7 [-3,3] or 9 [-4,4]
+    int fastest_shutter_speed;                       // fastest shutter speed denominator
+    int base_iso_min;                                // base iso minimum
+    int base_iso_max;                                // base iso maximum
+    int extended_iso_min;                            // extended iso minimum
+    int extended_iso_max;                            // extended iso maximum
+    pslr_jpeg_image_tone_t max_supported_image_tone; // last supported jpeg image tone
+    bool has_jpeg_hue;                               // camera has jpeg hue setting
+    int af_point_num;                                // number of AF points
+    ipslr_status_parse_t status_parser_function;     // parse function for status buffer
+} ipslr_model_info_t;
+*/
 
 ipslr_model_info_t camera_models[] = {
     { 0x12aa2, "*ist DS",     true,  true,  true,  false, false, false, 264, 3, {6, 4, 2},       5, 3000, 200, 2000, 200,  3200,  PSLR_JPEG_IMAGE_TONE_BRIGHT,           false, 11, ipslr_status_parse_istds},

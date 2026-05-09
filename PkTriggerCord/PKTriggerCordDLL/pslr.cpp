@@ -1094,18 +1094,25 @@ PKTRIGGERCORDDLL_API int pslr_buffer_open(pslr_handle_t h, int bufno, pslr_buffe
         if (info.b == 4) {
             p->segments[j].offset = info.length;
         } else if (info.b == 3) {
-            if (j == MAX_SEGMENTS) {
-                DPRINT("\tToo many segments.\n");
-                return PSLR_NO_MEMORY;
+            {
+                if (j == MAX_SEGMENTS) {
+                    DPRINT("\tToo many B3 segments.\n");
+                    return PSLR_NO_MEMORY;
+                }
+                p->segments[j].addr = info.addr;
+                p->segments[j].length = info.length;
+                p->segments[j].offset = buf_total;
+                buf_total += info.length;
+                j++;
             }
-            p->segments[j].addr = info.addr;
-            p->segments[j].length = info.length;
-            j++;
         }
         CHECK(ipslr_next_segment(p));
-        buf_total += info.length;
         i++;
-    } while (i < 9 && info.b != 2);
+    } while (i < 18 && info.b != 2);
+    if (i == 18) {
+        DPRINT("\tToo many segments.\n");
+        return PSLR_READ_ERROR;
+    }
     p->segment_count = j;
     p->offset = 0;
     return PSLR_OK;
